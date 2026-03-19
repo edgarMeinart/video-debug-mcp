@@ -9,23 +9,22 @@ import (
 	"github.com/meinart/video-debug-mcp/internal/tools"
 )
 
-const (
-	mp4boxDockerImage = "linuxserver/ffmpeg:latest"
-	mp4boxInputPath   = "/workspace/input"
-)
+const mp4boxInputPath = "/workspace/input"
 
-// MP4Box implements tools.Tool for running MP4Box -info.
-type MP4Box struct{}
+type MP4Box struct {
+	image string
+}
 
-// Name returns the tool's registered name.
+func NewMP4Box(image string) *MP4Box {
+	return &MP4Box{image: image}
+}
+
 func (t *MP4Box) Name() string { return "run_mp4box" }
 
-// Description returns a human-readable description.
 func (t *MP4Box) Description() string {
 	return "Run MP4Box -info to inspect MP4 container structure, streams, and timing"
 }
 
-// InputSchema returns the JSON schema for the tool's input.
 func (t *MP4Box) InputSchema() json.RawMessage {
 	return json.RawMessage(`{
 		"type": "object",
@@ -37,8 +36,7 @@ func (t *MP4Box) InputSchema() json.RawMessage {
 	}`)
 }
 
-// DockerImage returns the Docker image used to run MP4Box.
-func (t *MP4Box) DockerImage() string { return mp4boxDockerImage }
+func (t *MP4Box) DockerImage() string { return t.image }
 
 // BuildCommand builds the MP4Box command for the given input.
 func (t *MP4Box) BuildCommand(input tools.ToolInput) (*tools.DockerCommand, error) {

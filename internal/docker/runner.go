@@ -4,12 +4,12 @@ import (
 	"bytes"
 	"context"
 	"errors"
-	"io"
 	"time"
 
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/client"
+	"github.com/docker/docker/pkg/stdcopy"
 )
 
 // Runner is the interface for running commands in Docker containers.
@@ -93,7 +93,6 @@ func (dr *DockerRunner) Run(ctx context.Context, req RunRequest) (*RunResult, er
 	}
 
 	hostCfg := &container.HostConfig{
-		AutoRemove:  true,
 		NetworkMode: "none",
 		Mounts: []mount.Mount{
 			{
@@ -113,6 +112,7 @@ func (dr *DockerRunner) Run(ctx context.Context, req RunRequest) (*RunResult, er
 	if err != nil {
 		return nil, err
 	}
+	defer dr.cli.ContainerRemove(context.Background(), resp.ID, container.RemoveOptions{Force: true})
 
 	start := time.Now()
 
@@ -120,7 +120,6 @@ func (dr *DockerRunner) Run(ctx context.Context, req RunRequest) (*RunResult, er
 		return nil, err
 	}
 
-	// Wait for the container to finish.
 	statusCh, errCh := dr.cli.ContainerWait(ctx, resp.ID, container.WaitConditionNotRunning)
 	var exitCode int
 	select {
@@ -134,7 +133,6 @@ func (dr *DockerRunner) Run(ctx context.Context, req RunRequest) (*RunResult, er
 
 	duration := time.Since(start)
 
-	// Collect logs.
 	logReader, err := dr.cli.ContainerLogs(ctx, resp.ID, container.LogsOptions{
 		ShowStdout: true,
 		ShowStderr: true,
@@ -145,9 +143,7 @@ func (dr *DockerRunner) Run(ctx context.Context, req RunRequest) (*RunResult, er
 	defer logReader.Close()
 
 	var stdoutBuf, stderrBuf bytes.Buffer
-	// Docker multiplexes stdout/stderr with an 8-byte header per frame.
-	// Use io.Copy as a simple fallback — for demuxed output use dockerstdcopy.
-	if _, err := io.Copy(&stdoutBuf, logReader); err != nil {
+	if _, err := stdcopy.StdCopy(&stdoutBuf, &stderrBuf, logReader); err != nil {
 		return nil, err
 	}
 

@@ -59,8 +59,8 @@ func NewServer(cfg *config.Config) (*Server, error) {
 	directTools := []tools.Tool{
 		ffmpeg.NewFFprobe(cfg.Docker.Images.FFmpeg),
 		ffmpeg.NewFFmpeg(cfg.Docker.Images.FFmpeg),
-		&mp4.MP4Box{},
-		&mp4.MP4Dump{},
+		mp4.NewMP4Box(cfg.Docker.Images.MP4),
+		mp4.NewMP4Dump(cfg.Docker.Images.MP4),
 		bento4.NewBento4(cfg.Docker.Images.Bento4),
 		mediainfo.NewMediaInfo(cfg.Docker.Images.MediaInfo),
 		shaka.NewShaka(cfg.Docker.Images.Shaka),

@@ -3,8 +3,8 @@ package ffmpeg
 import (
 	"encoding/json"
 
-	tools "github.com/meinart/video-debug-mcp/internal/tools"
 	"github.com/meinart/video-debug-mcp/internal/output"
+	tools "github.com/meinart/video-debug-mcp/internal/tools"
 )
 
 const ffprobeName = "run_ffprobe"
@@ -58,7 +58,7 @@ func (f *FFprobe) BuildCommand(input tools.ToolInput) (*tools.DockerCommand, err
 			"-print_format", "json",
 			"-show_streams",
 			"-show_format",
-			input.URL,
+			"/workspace/input",
 		}
 	}
 

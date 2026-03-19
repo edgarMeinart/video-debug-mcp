@@ -5,9 +5,9 @@ import (
 	"os"
 	"testing"
 
+	"github.com/meinart/video-debug-mcp/internal/output"
 	tools "github.com/meinart/video-debug-mcp/internal/tools"
 	"github.com/meinart/video-debug-mcp/internal/tools/ffmpeg"
-	"github.com/meinart/video-debug-mcp/internal/output"
 )
 
 const testImage = "linuxserver/ffmpeg:latest"
@@ -43,7 +43,7 @@ func TestFFprobe_BuildCommand_Default(t *testing.T) {
 		"-print_format", "json",
 		"-show_streams",
 		"-show_format",
-		input.URL,
+		"/workspace/input",
 	}
 
 	if cmd.Binary != "ffprobe" {

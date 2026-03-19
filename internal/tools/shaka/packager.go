@@ -54,7 +54,7 @@ func (s *Shaka) BuildCommand(input tools.ToolInput) (*tools.DockerCommand, error
 	args := input.Args
 	if len(args) == 0 {
 		args = []string{
-			"input=/workspace/input,stream=video,output=/dev/null",
+			"input=/workspace/input,stream=video,output=/tmp/out.mp4",
 			"--dump_stream_info",
 		}
 	}

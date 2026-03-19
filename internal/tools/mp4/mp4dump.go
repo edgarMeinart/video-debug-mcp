@@ -9,20 +9,20 @@ import (
 	"github.com/meinart/video-debug-mcp/internal/tools"
 )
 
-const mp4dumpDockerImage = "linuxserver/ffmpeg:latest"
+type MP4Dump struct {
+	image string
+}
 
-// MP4Dump implements tools.Tool for running mp4dump.
-type MP4Dump struct{}
+func NewMP4Dump(image string) *MP4Dump {
+	return &MP4Dump{image: image}
+}
 
-// Name returns the tool's registered name.
 func (t *MP4Dump) Name() string { return "run_mp4dump" }
 
-// Description returns a human-readable description.
 func (t *MP4Dump) Description() string {
 	return "Run mp4dump to display the ISO BMFF box structure of an MP4 file"
 }
 
-// InputSchema returns the JSON schema for the tool's input.
 func (t *MP4Dump) InputSchema() json.RawMessage {
 	return json.RawMessage(`{
 		"type": "object",
@@ -34,8 +34,7 @@ func (t *MP4Dump) InputSchema() json.RawMessage {
 	}`)
 }
 
-// DockerImage returns the Docker image used to run mp4dump.
-func (t *MP4Dump) DockerImage() string { return mp4dumpDockerImage }
+func (t *MP4Dump) DockerImage() string { return t.image }
 
 // BuildCommand builds the mp4dump command for the given input.
 func (t *MP4Dump) BuildCommand(input tools.ToolInput) (*tools.DockerCommand, error) {
