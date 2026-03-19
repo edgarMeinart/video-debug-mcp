@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	mcphttp "github.com/mark3labs/mcp-go/server"
+	mcpserver "github.com/mark3labs/mcp-go/server"
 
 	"github.com/meinart/video-debug-mcp/internal/config"
 	"github.com/meinart/video-debug-mcp/internal/server"
@@ -14,6 +14,7 @@ import (
 
 func main() {
 	configPath := flag.String("config", "config.yaml", "path to config file")
+	transport := flag.String("transport", "sse", "transport type: stdio or sse")
 	flag.Parse()
 
 	cfg, err := config.Load(*configPath)
@@ -28,10 +29,20 @@ func main() {
 		log.Fatalf("Failed to create server: %v", err)
 	}
 
-	addr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
-	log.Printf("Starting video-debug-mcp server on %s", addr)
 	log.Printf("Registered %d tools", srv.ToolCount())
 
-	sseServer := mcphttp.NewSSEServer(srv.MCPServer())
-	log.Fatal(http.ListenAndServe(addr, sseServer))
+	switch *transport {
+	case "stdio":
+		log.Printf("Starting video-debug-mcp server on stdio")
+		if err := mcpserver.ServeStdio(srv.MCPServer()); err != nil {
+			log.Fatalf("Stdio server error: %v", err)
+		}
+	case "sse":
+		addr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
+		log.Printf("Starting video-debug-mcp server on %s", addr)
+		sseServer := mcpserver.NewSSEServer(srv.MCPServer())
+		log.Fatal(http.ListenAndServe(addr, sseServer))
+	default:
+		log.Fatalf("Unknown transport %q: use 'stdio' or 'sse'", *transport)
+	}
 }
