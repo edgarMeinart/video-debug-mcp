@@ -1,0 +1,33 @@
+# config.yaml
+server:
+  port: 8080
+  host: "0.0.0.0"
+
+docker:
+  images:
+    ffmpeg: "video-debug/ffmpeg-tools"
+    mp4: "video-debug/mp4-tools"
+    bento4: "video-debug/bento4-tools"
+    mediainfo: "video-debug/mediainfo-tools"
+    shaka: "video-debug/shaka-tools"
+  defaults:
+    timeout: 60s
+    memory_limit: "512m"
+    cpu_limit: "1.0"
+  per_tool:
+    ffmpeg:
+      timeout: 120s
+      memory_limit: "1g"
+
+fetcher:
+  max_concurrent_downloads: 10
+  segment_sample_count: 3
+  request_timeout: 30s
+  max_asset_size: "500m"
+  user_agent: "video-debug-mcp/1.0"
+
+output:
+  default_verbosity: "standard"
+
+playback:
+  default_duration: 10

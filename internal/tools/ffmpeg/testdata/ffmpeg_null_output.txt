@@ -1,0 +1,9 @@
+ffmpeg version 6.1 Copyright (c) 2000-2023 the FFmpeg developers
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/workspace/input':
+  Duration: 00:02:00.50, start: 0.000000, bitrate: 5128 kb/s
+  Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 1920x1080, 5000 kb/s, 29.97 fps
+  Stream #0:1(eng): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x55f6a3b5a000] discarding pts discontinuity at 45.045000
+[h264 @ 0x55f6a3b5c100] concealing 32 DC, 32 AC, 32 MV errors in P frame
+frame= 3600 fps=120.0 q=-0.0 Lsize=N/A time=00:02:00.50 bitrate=N/A speed=4.01x
+video:0kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown

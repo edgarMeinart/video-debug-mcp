@@ -1,0 +1,1 @@
+{"movie":{"duration_ms":120500,"timescale":1000,"fragments":true,"tracks":[{"id":1,"type":"Video","codec":"avc1","duration_ms":120500,"timescale":90000,"width":1920,"height":1080,"sample_count":3600,"bitrate":5000000},{"id":2,"type":"Audio","codec":"mp4a","duration_ms":120500,"timescale":48000,"sample_rate":48000,"channels":2,"sample_count":5640,"bitrate":128000}]}}

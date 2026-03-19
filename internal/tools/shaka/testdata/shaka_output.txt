@@ -1,0 +1,8 @@
+[0319/120000:INFO:demuxer.cc] Demuxer::Run() on file '/workspace/input'.
+[0319/120000:INFO:demuxer.cc] Initialize Demuxer for file '/workspace/input'.
+[0319/120000:INFO:mp4_media_parser.cc] MPEG-4 file detected: brand = isom
+[0319/120000:INFO:mp4_media_parser.cc] Track type: video, codec: avc1
+[0319/120000:INFO:mp4_media_parser.cc] Width: 1920, Height: 1080
+[0319/120000:INFO:mp4_media_parser.cc] Track type: audio, codec: mp4a
+[0319/120000:WARNING:mp4_media_parser.cc] Potential timestamp overlap at sample 1200
+Packaging completed successfully.
