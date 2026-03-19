@@ -5,11 +5,11 @@ server:
 
 docker:
   images:
-    ffmpeg: "video-debug/ffmpeg-tools"
-    mp4: "video-debug/mp4-tools"
-    bento4: "video-debug/bento4-tools"
-    mediainfo: "video-debug/mediainfo-tools"
-    shaka: "video-debug/shaka-tools"
+    ffmpeg: "jrottenberg/ffmpeg:7-alpine"
+    mp4: "ghcr.io/gpac/gpac:latest"
+    bento4: "alfg/bento4:latest"
+    mediainfo: "mediaarea/mediainfo:latest"
+    shaka: "google/shaka-packager:latest"
   defaults:
     timeout: 60s
     memory_limit: "512m"
